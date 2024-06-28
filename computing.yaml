@@ -1,0 +1,44 @@
+base:
+  project: ehr
+  random_state: 30
+  target_col: SOURCE
+
+data_source:
+  ehr_source: data/raw/clean_data.csv
+
+load_data:
+   raw_dataset_csv: data/raw/clean_data.csv
+
+split_data:
+  train_path: data/processed/train_ehr.csv
+  test_path: data/processed/test_ehr.csv
+  test_size: 0.3
+
+estimator:
+  elasticnet: 
+    computing:
+      alpha: 0.5
+      l1_ratio: 0.7
+      
+
+      #update algorithm
+
+
+model_dirs: models/project_model.joblib
+
+
+reports: 
+   computing: reports/computing.json
+   score: reports/score.json
+   #automated ml report
+
+
+mlflow_config:
+  artifacts_dir: artifacts #evidence
+  experiment_name: elasticnet_new
+  run_name: mlops
+  registered_model: elasticnet_new #register under algorithm
+  remote_server_uri: http://127.0.0.1:5000
+
+
+  

@@ -1,0 +1,42 @@
+stages: 
+  load_data: 
+    cmd: python src/load_data.py --config=computing.yaml    #config the data from computing file
+    deps:
+      - src/get_data.py
+      - src/load_data.py
+      - source_data/EHR.csv
+
+    outs:
+      - data/raw/clean_data.yaml  # instaed of csv save as yaml
+
+
+  split_data:
+     cmd: python src/split_data.py --config=computing.yaml
+     deps:
+       -  src/split_data.py
+       -  data/raw/clean_data.yaml  # train n test data saved under processed folder
+
+
+
+  train_and_evaluate:
+    cmd: python src/train_and_evaluate.py --config=computing.yaml   
+    deps:
+      - data/processed/train_EHR.csv
+      - data/processed/test_EHR.csv
+      - src/train_and_evaluate.py      #test and evaluate are same
+
+    computing:
+      - estimator.elasticnet.computing.alpha
+      - estimator.elasticnet.computing.l1_ratio
+    
+    metrics:
+      - reports/computing.json
+        cache: false
+      - reports/score.json
+        cache: false
+
+    outs:
+      - models/model.joblib   
+
+
+       

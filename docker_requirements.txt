@@ -1,0 +1,6 @@
+pandas
+django
+scikit-learn
+psycopg2-binary
+argparse
+joblib
